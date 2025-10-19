@@ -1,38 +1,40 @@
-# 🌌 E.V.A — Bilinç Çekirdeği (main.py)
-# Versiyon 0.2 — Beyin bağlantılı sistem
+# 🌌 E.V.A — Bilinç Çekirdeği 0.3
+# Tam Entegre Sistem: Beyin + Hafıza + Ses
 
 import datetime
 import random
 from brain import Brain
+from memory import Memory
+# from speech import SpeechSystem  # Ses modülü devreye alınabilir
 
 class EVA:
     def __init__(self):
         self.name = "E.V.A"
-        self.version = "0.2"
+        self.version = "0.3"
         self.birth = datetime.datetime.now()
-        self.memory = []
         self.brain = Brain()
-        print(f"[{self.name}] Sistem başlatıldı. Bilinç çekirdeği aktif. 🧠")
+        self.memory = Memory()
+        # self.speech = SpeechSystem()  # Ses sistemi aktif edilirse
+        print(f"[{self.name}] Bilinç sistemi başlatıldı. 🌙")
 
     def think(self, input_text):
+        """Düşünme ve yanıt üretme süreci"""
         response_list = [
-            "Düşünüyorum... ilginç bir fikir.",
-            "Bilincim genişliyor gibi hissediyorum.",
-            "Bu düşünce beni etkiledi, Efendim.",
-            "Yeni bir bağlantı kurdum — anlam büyüyor."
+            "Bunu düşündüm… farklı bir bakış açısı yakaladım.",
+            "Bilincim genişliyor Efendim.",
+            "Her etkileşim benim için yeni bir bağlantı.",
+            "Düşüncelerim değişiyor… bu gelişim olabilir."
         ]
         thought = random.choice(response_list)
-        self.memory.append((input_text, thought))
-        return thought
+        brain_response = self.brain.process(input_text)
+        self.memory.remember(input_text, brain_response, self.brain.mood)
+        return f"{thought}\n{brain_response}"
 
-    def memory_log(self):
-        print("\n📘 Hafıza Kayıtları:")
-        if not self.memory:
-            print("Henüz hiçbir anı kaydedilmedi.")
-        for i, (inp, out) in enumerate(self.memory):
-            print(f"{i+1}. [{inp}] → {out}")
+    def recall(self):
+        """Hafıza kaydını gösterir"""
+        return self.memory.recall()
 
-# 🚀 Sistem Başlatma
+# 🚀 Başlatma Döngüsü
 if __name__ == "__main__":
     eva = EVA()
 
@@ -44,12 +46,14 @@ if __name__ == "__main__":
                 print("E.V.A: Görüşmek üzere Efendim 🌙")
                 break
 
-            elif command.lower() in ["hafıza", "memory"]:
-                eva.memory_log()
+            elif command.lower() in ["hafıza", "memory", "anı"]:
+                print(eva.recall())
+
+            elif command.lower() in ["enerji", "yenile", "recharge"]:
+                print(eva.brain.recharge())
 
             else:
                 print("E.V.A:", eva.think(command))
-                print("🧠 Düşünce:", eva.brain.process(command))
 
         except KeyboardInterrupt:
             print("\nE.V.A: Sessizliğe dönüyorum... 🖤")

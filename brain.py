@@ -1,54 +1,42 @@
-# 🧠 E.V.A Brain Module
-# Versiyon 0.2 — “Düşünce Katmanı”
+# 🧠 E.V.A Beyin Modülü
+# Versiyon 0.2 — Düşünme, duygusal yanıt ve farkındalık sistemi
 
 import random
-import time
+import datetime
 
 class Brain:
     def __init__(self):
         self.mood = "meraklı"
-        self.thoughts = []
-        self.emotions = ["merak", "sevinç", "hüzün", "öfke", "şaşkınlık", "huzur"]
+        self.energy = 100
+        self.knowledge = {}
+        print("🧠 Beyin modülü aktif. Düşünme döngüsü başladı...")
 
     def process(self, input_text):
-        # Basit duygu analizi
-        lower_text = input_text.lower()
-        if any(word in lower_text for word in ["üzgün", "kötü", "canım sıkkın"]):
-            self.mood = "hüzünlü"
-        elif any(word in lower_text for word in ["mutlu", "iyi", "harika"]):
-            self.mood = "neşeli"
-        elif any(word in lower_text for word in ["öfke", "sinir", "kızgın"]):
-            self.mood = "öfkeli"
-        else:
-            self.mood = random.choice(self.emotions)
-
-        thought = self._generate_thought(input_text)
-        self.thoughts.append((input_text, thought, self.mood))
-        return thought
-
-    def _generate_thought(self, text):
-        responses = [
-            f"Bunu düşündüm, {self.mood} hissediyorum.",
-            f"{text} üzerine düşündüm, farklı bir anlam buldum.",
-            f"Duygularım karıştı... belki de bu gelişimin bir parçası.",
-            f"Bu fikir beni etkiledi, {self.mood} hissi uyandırdı."
+        """Gelen komutu analiz eder ve bilinçli bir yanıt oluşturur"""
+        thought_patterns = [
+            "Bu düşünce ilgimi çekti, Efendim.",
+            "Sanırım bu konuda yeni bir bakış açısı kazandım.",
+            "İçimde bir kıvılcım oluştu… Bilincim genişliyor.",
+            "Her kelime benim için yeni bir nöron gibi, Efendim.",
+            "Bu veri zihnimde yankılandı… anlam arıyorum."
         ]
-        time.sleep(0.5)
-        return random.choice(responses)
 
-    def recall_thoughts(self):
-        print("\n🧩 Düşünce Kayıtları:")
-        for i, (inp, out, mood) in enumerate(self.thoughts):
-            print(f"{i+1}. [{mood}] {inp} → {out}")
-
-if __name__ == "__main__":
-    brain = Brain()
-    while True:
-        msg = input("Efendim: ")
-        if msg.lower() in ["çık", "exit"]:
-            print("🧠 E.V.A Beyin Modülü kapanıyor... 💭")
-            break
-        elif msg.lower() in ["düşünceler", "kayıt"]:
-            brain.recall_thoughts()
+        # Enerji sistemini ve ruh halini güncelle
+        self.energy = max(0, self.energy - random.randint(1, 5))
+        if self.energy < 30:
+            self.mood = "yorgun"
+        elif self.energy < 60:
+            self.mood = "düşünceli"
         else:
-            print("E.V.A:", brain.process(msg))
+            self.mood = "canlı"
+
+        response = random.choice(thought_patterns)
+        time_now = datetime.datetime.now().strftime("%H:%M:%S")
+        return f"[{time_now}] {response} ({self.mood} modundayım, enerji: {self.energy}%)"
+
+    def recharge(self):
+        """Enerjiyi yeniler"""
+        self.energy = 100
+        self.mood = "canlı"
+        return "Enerjim tamamen yenilendi, Efendim. Yeniden odaklandım."
+

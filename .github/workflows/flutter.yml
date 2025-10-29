@@ -10,22 +10,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+    - name: 🧩 Checkout repository
+      uses: actions/checkout@v4
 
-    - name: Set up Flutter
+    - name: ⚙️ Set up Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.22.2'
+        flutter-version: "3.22.2"
 
-    - name: Install dependencies
-      run: flutter pub get
+    - name: 📁 Verify project directory
+      run: |
+        echo "Checking for pubspec.yaml..."
+        find . -name "pubspec.yaml"
 
-    - name: Build APK
-      run: flutter build apk --release
+    - name: 📦 Install dependencies
+      run: |
+        if [ -d "EVA_App" ]; then cd EVA_App; fi
+        flutter pub get
 
-    - name: Upload APK
+    - name: 🏗️ Build release APK
+      run: |
+        if [ -d "EVA_App" ]; then cd EVA_App; fi
+        flutter build apk --release
+
+    - name: 📤 Upload generated APK
       uses: actions/upload-artifact@v4
       with:
-        name: E.V.A-App
-        path: build/app/outputs/flutter-apk/app-release.apk
+        name: E.V.A-Release-APK
+        path: |
+          EVA_App/build/app/outputs/flutter-apk/app-release.apk
+          build/app/outputs/flutter-apk/app-release.apk
